@@ -1,7 +1,9 @@
 {
   "expo": {
     "name": "be-a-man",
+    "owner": "gabrielfurlan",
     "slug": "be-a-man",
+    "scheme": "be-a-man",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
