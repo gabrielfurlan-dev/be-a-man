@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as AuthSession from 'expo-auth-session';
 import { User, UserProps } from './src/assets/User';
+import config from "./config"
 
 type AuthResponse = {
     params: {
@@ -17,9 +18,8 @@ function HomeScreen() {
 
   async function handleGoogleSignIn(){
     try {
-      //TO-DO: mover credenciais para um .env
-      const CLIENT_ID = ""; //insira seu clien_Id aqi
-      const REDIRECT_URI = ""; //insira sua redirect_uri aqui
+      const CLIENT_ID = config.CLIENT_ID;
+      const REDIRECT_URI = config.REDIRECT_URI;
       const RESPONSE_TYPE = "token";
       const SCOPE = encodeURI("profile email");
 
