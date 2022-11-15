@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import {Text} from 'native-base'
+import { Image, View } from 'react-native';
 
 // import { Container } from './styles';
 
@@ -17,7 +18,7 @@ export function User({user} : Props) {
   return (
     <View>
         <Image source={{uri: user.picture}}></Image>
-        <Text>
+        <Text >
         {user.name}
         </Text>
     </View>
