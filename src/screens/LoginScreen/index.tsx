@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as AuthSession from 'expo-auth-session';
 import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
-import { extendTheme, Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex } from "native-base";
-import sizes from 'native-base/lib/typescript/theme/base/sizes';
+import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
 
 type AuthResponse = {
   params: {
@@ -16,7 +14,7 @@ type AuthResponse = {
 export
   function LoginScreen() {
   const [userData, setUserData] = useState<UserProps>({} as UserProps)
-  const [agreeTermsValue, setAgreeTermsValue] = React.useState([]);
+  const [groupValue, setGroupValue] = React.useState(true);
 
   async function handleGoogleSignIn() {
     try {
@@ -41,6 +39,8 @@ export
     }
   }
 
+  function ValidarCheckBoxTermoDeUso() { }
+
   return (
     <NativeBaseProvider>
       <Flex size={"full"} direction={"column"} justifyContent={"space-between"} >
@@ -55,25 +55,45 @@ export
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus.
           </Text>
 
-          <Checkbox.Group
-            value={agreeTermsValue}
-            onChange={setAgreeTermsValue}
-            accessibilityLabel="agree with the user terms"
-          >
+          <FormControl isInvalid={!groupValue}>
+            <Checkbox.Group
+              mt="2"
+              accessibilityLabel="agree with the user terms"
+              alignItems="flex-start"
+              defaultValue={['AgreeUserTerms']}
+            >
 
-            <Checkbox value='agree'>
-              <Text color="white">I agree with the user terms.</Text>
-            </Checkbox>
-          </Checkbox.Group>
+              <Checkbox
+                value='AgreeUserTerms'
+                onChange={
+                  values => {
+                    setGroupValue(values);
+                  }
+                }
+              >
+                <Text color={'white'}>
+                  I agree with the user terms.
+                </Text>
+              </Checkbox>
 
-          <Button
-            onPress={handleGoogleSignIn}
-            marginTop={10}
-            width={100}
-            backgroundColor={"#FFFFFF"}
-          >
-            <Text>Start</Text>
-          </Button>
+            </Checkbox.Group>
+
+            <FormControl.ErrorMessage _stack={{
+              alignItems: "flex-start"
+            }} leftIcon={<WarningOutlineIcon size="xs" mt={1} />}>
+              You should accept the user terms before.
+            </FormControl.ErrorMessage>
+
+            <Button
+              onPress={groupValue ? handleGoogleSignIn : () => { }}
+              marginTop={10}
+              width={100}
+              backgroundColor={"#FFFFFF"}
+            >
+              <Text>Start</Text>
+            </Button>
+          </FormControl>
+
         </Box>
 
         <Box
