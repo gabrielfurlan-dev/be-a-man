@@ -3,6 +3,23 @@ import * as AuthSession from 'expo-auth-session';
 import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
 import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
+import { useNavigation } from '@react-navigation/native';
+// import { RootStackParamList } from '../RootStackPrams';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+// import { createStackNavigator } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  SettingUp: undefined;
+};
+
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+
+
+
+
+
+
 
 type AuthResponse = {
   params: {
@@ -11,35 +28,34 @@ type AuthResponse = {
   type: string;
 }
 
+async function handleGoogleSignIn() {
+  try {
+    const CLIENT_ID = config.CLIENT_ID;
+    const REDIRECT_URI = config.REDIRECT_URI;
+    const RESPONSE_TYPE = "token";
+    const SCOPE = encodeURI("profile email");
+
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+
+    const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
+
+    if (type == 'success') {
+      const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
+      const user = await response.json();
+
+      // setUserData(user);
+    }
+
+  } catch (error) {
+    alert(error)
+    console.log(error);
+  }
+}
+
 export
   function LoginScreen() {
   const [userData, setUserData] = useState<UserProps>({} as UserProps)
   const [groupValue, setGroupValue] = React.useState(true);
-
-  async function handleGoogleSignIn() {
-    try {
-      const CLIENT_ID = config.CLIENT_ID;
-      const REDIRECT_URI = config.REDIRECT_URI;
-      const RESPONSE_TYPE = "token";
-      const SCOPE = encodeURI("profile email");
-
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-
-      const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
-
-      if (type == 'success') {
-        const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
-        const user = await response.json();
-
-        setUserData(user);
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  function ValidarCheckBoxTermoDeUso() { }
 
   return (
     <NativeBaseProvider>
@@ -109,8 +125,6 @@ export
             alt={'marcus aurelius'}
           />
         </Box>
-
-
       </Flex>
     </NativeBaseProvider>
   );
