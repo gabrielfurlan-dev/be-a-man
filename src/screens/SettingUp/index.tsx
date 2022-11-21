@@ -1,7 +1,7 @@
 import { Box, Text } from "native-base";
 
 
-export default function SettingUp() {
+export default function() {
     return (
         <Box>
             <Text>

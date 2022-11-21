@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { LoginScreen } from "../../screens/LoginScreen";
+import LoginScreen from "../../screens/LoginScreen";
 import SettingUp from "../../screens/SettingUp";
 
 const { Navigator, Screen } = createNativeStackNavigator()
@@ -23,13 +23,13 @@ export default function () {
             <Screen
                 name="Home"
                 component={LoginScreen}
-                options={{ title: '' }}
+                options={{ headerShown: false }}
             />
 
             <Screen
                 name='SettingUp'
                 component={SettingUp}
-                options={{ title: '' }}
+                options={{ headerShown: false }}
             />
         </Navigator>
     );

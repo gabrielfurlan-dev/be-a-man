@@ -4,10 +4,7 @@ import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
 import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
 import { useNavigation } from '@react-navigation/native';
-// import { RootStackParamList } from '../RootStackPrams';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-// import { createStackNavigator } from '@react-navigation/stack';
 
 type RootStackParamList = {
   SettingUp: undefined;
@@ -15,12 +12,7 @@ type RootStackParamList = {
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
-
-
-
-
-
-
+const navigation = useNavigation();
 type AuthResponse = {
   params: {
     access_token: string;
@@ -40,9 +32,10 @@ async function handleGoogleSignIn() {
     const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
     if (type == 'success') {
+
       const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
       const user = await response.json();
-
+      
       // setUserData(user);
     }
 
@@ -52,10 +45,9 @@ async function handleGoogleSignIn() {
   }
 }
 
-export
-  function LoginScreen() {
-  const [userData, setUserData] = useState<UserProps>({} as UserProps)
-  const [groupValue, setGroupValue] = React.useState(true);
+export default function() {
+    const [userData, setUserData] = useState<UserProps>({} as UserProps)
+    const [groupValue, setGroupValue] = React.useState(true);
 
   return (
     <NativeBaseProvider>
