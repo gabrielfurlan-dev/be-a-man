@@ -3,51 +3,55 @@ import * as AuthSession from 'expo-auth-session';
 import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
 import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
-  SettingUp: undefined;
+  Home: undefined,
+  SettingUp: undefined,
+  LoginScreen: undefined; 
 };
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+type ProfileScreenNavigationProp = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-const navigation = useNavigation();
-type AuthResponse = {
-  params: {
-    access_token: string;
-  };
-  type: string;
-}
+type Props = { navigation: ProfileScreenNavigationProp; };
 
-async function handleGoogleSignIn() {
-  try {
-    const CLIENT_ID = config.CLIENT_ID;
-    const REDIRECT_URI = config.REDIRECT_URI;
-    const RESPONSE_TYPE = "token";
-    const SCOPE = encodeURI("profile email");
-
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-
-    const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
-
-    if (type == 'success') {
-
-      const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
-      const user = await response.json();
-      
-      // setUserData(user);
-    }
-
-  } catch (error) {
-    alert(error)
-    console.log(error);
-  }
-}
-
-export default function() {
+export default function({navigation}: Props) {
     const [userData, setUserData] = useState<UserProps>({} as UserProps)
     const [groupValue, setGroupValue] = React.useState(true);
+
+    type AuthResponse = {
+      params: {
+        access_token: string;
+      };
+      type: string;
+    } 
+
+    async function handleGoogleSignIn() {
+      try {
+        const CLIENT_ID = config.CLIENT_ID;
+        const REDIRECT_URI = config.REDIRECT_URI;
+        const RESPONSE_TYPE = "token";
+        const SCOPE = encodeURI("profile email");
+
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+
+        const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
+
+        if (type == 'success') {
+
+          const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
+          const user = await response.json();
+          
+          setUserData(user);
+
+          navigation.navigation.navigate("SettingUp");
+        }
+
+      } catch (error) {
+        alert(error)
+        console.log(error);
+      }
+    }
 
   return (
     <NativeBaseProvider>
@@ -93,7 +97,7 @@ export default function() {
             </FormControl.ErrorMessage>
 
             <Button
-              onPress={groupValue ? handleGoogleSignIn : () => { }}
+              onPress={handleGoogleSignIn}
               marginTop={10}
               width={100}
               backgroundColor={"#FFFFFF"}

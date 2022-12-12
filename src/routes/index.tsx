@@ -12,7 +12,7 @@ const navTheme = {
 export default function(){
     return(
         <NavigationContainer
-             theme={navTheme}>
+         theme={navTheme}>
             <Stack/>
         </NavigationContainer>
     );

@@ -1,10 +1,16 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+type RootStackParamList = {
+    Home: undefined,
+    SettingUp: undefined,
+    LoginScreen: undefined; 
+  };
+
 import LoginScreen from "../../screens/LoginScreen";
 import SettingUp from "../../screens/SettingUp";
 
-const { Navigator, Screen } = createNativeStackNavigator()
+const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>()
 
 export default function () {
     return (
