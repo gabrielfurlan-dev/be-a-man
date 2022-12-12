@@ -4,6 +4,8 @@ import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
 import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Routes from "../../routes";
+import {useNavigation} from "@react-navigation/native"
 
 type RootStackParamList = {
   Home: undefined,
@@ -15,7 +17,7 @@ type ProfileScreenNavigationProp = NativeStackScreenProps<RootStackParamList, 'H
 
 type Props = { navigation: ProfileScreenNavigationProp; };
 
-export default function({navigation}: Props) {
+export default function() {
     const [userData, setUserData] = useState<UserProps>({} as UserProps)
     const [groupValue, setGroupValue] = React.useState(true);
 
@@ -25,6 +27,12 @@ export default function({navigation}: Props) {
       };
       type: string;
     } 
+
+    const navigation = useNavigation();
+
+    function handleSettingUpPage(){
+      navigation.navigate("SettingUp");
+    }
 
     async function handleGoogleSignIn() {
       try {
@@ -44,7 +52,7 @@ export default function({navigation}: Props) {
           
           setUserData(user);
 
-          navigation.navigation.navigate("SettingUp");
+          handleSettingUpPage();
         }
 
       } catch (error) {

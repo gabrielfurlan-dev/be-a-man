@@ -1,5 +1,5 @@
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import Stack from "./stack"
+import {AppRoutes} from "./app.routes"
 
 const navTheme = {
     ...DefaultTheme,
@@ -13,7 +13,7 @@ export default function(){
     return(
         <NavigationContainer
          theme={navTheme}>
-            <Stack/>
+            <AppRoutes/>
         </NavigationContainer>
     );
 }
