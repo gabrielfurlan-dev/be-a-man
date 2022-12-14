@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { Text, View, Input, Button } from "native-base";
+import { Plus, X } from "phosphor-react-native";
 
 interface IToDo {
   text: string;
   completed: boolean;
 }
 
-// export default function App() {
+export default function () {
   const [value, setValue] = useState<string>("");
   const [toDoList, setToDos] = useState<IToDo[]>([]);
   const [error, showError] = useState<Boolean>(false);
@@ -32,104 +32,51 @@ interface IToDo {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Todo List</Text>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          placeholder="Enter your todo task..."
-          value={value}
-          onChangeText={e => {
-            setValue(e);
-            showError(false);
-          }}
-          style={styles.inputBox}
-        />
-        <Button title="Add Task" onPress={handleSubmit} />
+    <View padding={35} justifyContent={"space-between"}>
+      <View display={"flex"} flexDirection={"row"} justifyContent={"space-between"}>
+        <Text color={"white"}>Days</Text>
+        <Input color={"white"} borderColor={"rgba(0,0,0,0)"} width={"40px"} keyboardType='numeric'>10</Input>
+      </View>
+
+      <View>
+        <Text color={"white"} bold>Diary tasks</Text>
       </View>
       {error && (
-        <Text style={styles.error}>Error: Input field is empty...</Text>
+        <Text color={"red"}>Error: Input field is empty...</Text>
       )}
-      <Text style={styles.subtitle}>Your Tasks :</Text>
       {toDoList.length === 0 && <Text>No to do task available</Text>}
       {toDoList.map((toDo: IToDo, index: number) => (
-        <View style={styles.listItem} key={`${index}_${toDo.text}`}>
-          <Text
-            style={[
-              styles.task,
-              { textDecorationLine: toDo.completed ? "line-through" : "none" }
+        <View
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          width={"100%"}
+          key={`${index}_${toDo.text}`}
+        >
+          <Text width={200} color={"white"}
+            style={[{ textDecorationLine: toDo.completed ? "line-through" : "none" }
             ]}
           >
             {toDo.text}
           </Text>
-          <Button
-            title={toDo.completed ? "Completed" : "Complete"}
-            onPress={() => toggleComplete(index)}
-          />
-          <Button
-            title="X"
-            onPress={() => {
-              removeItem(index);
-            }}
-            color="crimson"
-          />
+          <Button backgroundColor={"none"} color={"red"}onPress={() => { removeItem(index); }} ><X/></Button>
         </View>
       ))}
+
+      <View width={100} flexDirection={"row"} justifyContent={"space-between"} position={"fixed"} bottom={0} marginBottom={20}>
+        <Input
+          placeholder="Enter your todo task..."
+          value={value}
+          backgroundColor={"gray.800"}
+          onChangeText={e => {
+            setValue(e);
+            showError(false);
+          }}
+          width={200} borderColor={"purple"} borderRadius={8} borderWidth={2} paddingLeft={9}
+        />
+        <Button backgroundColor={"none"} size={"32px"} onPress={handleSubmit}><Plus color="white" size={32} weight="fill" /></Button>
+      </View>
+
     </View>
   );
-// }
-
-export default function()
-{
-    return(
-        <SafeAreaView>
-
-        </SafeAreaView>
-    );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     padding: 35,
-//     alignItems: "center"
-//   },
-//   inputWrapper: {
-//     width: "100%",
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     marginBottom: 20
-//   },
-//   inputBox: {
-//     width: 200,
-//     borderColor: "purple",
-//     borderRadius: 8,
-//     borderWidth: 2,
-//     paddingLeft: 8
-//   },
-//   title: {
-//     fontSize: 40,
-//     marginBottom: 40,
-//     fontWeight: "bold",
-//     textDecorationLine: "underline"
-//   },
-//   subtitle: {
-//     fontSize: 20,
-//     marginBottom: 20,
-//     color: "purple"
-//   },
-//   listItem: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     width: "100%",
-//     marginBottom: 10
-//   },
-//   addButton: {
-//     alignItems: "flex-end"
-//   },
-//   task: {
-//     width: 200
-//   },
-//   error: {
-//     color: "red"
-//   }
-// });
