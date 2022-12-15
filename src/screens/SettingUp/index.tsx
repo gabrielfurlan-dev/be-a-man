@@ -1,17 +1,15 @@
-import { View } from "native-base";
+import { Button, View } from "native-base";
 import BackButton from "../../components/backButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TodoList from "../../components/TodoList";
 
- 
-export default function() {
+
+export default function () {
     return (
         <SafeAreaView>
-            <BackButton text="SettingUp"/>
-            <View>
-                <TodoList/>
-            </View>
+            <BackButton text="SettingUp" previousRoute="LoginScreen" />
+            <TodoList />
+            <Button marginX={10}>Next Step</Button>
         </SafeAreaView>
-
     );
 }

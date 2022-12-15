@@ -4,7 +4,6 @@ import { User, UserProps } from '../../assets/User';
 import config from '../../../config';
 import { Image, NativeBaseProvider, Box, Text, Checkbox, Button, Flex, FormControl, WarningOutlineIcon } from "native-base";
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Routes from "../../routes";
 import {useNavigation} from "@react-navigation/native"
 
 type RootStackParamList = {
@@ -13,7 +12,7 @@ type RootStackParamList = {
   LoginScreen: undefined; 
 };
 
-type ProfileScreenNavigationProp = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type ProfileScreenNavigationProp = NativeStackScreenProps<RootStackParamList>;
 
 type Props = { navigation: ProfileScreenNavigationProp; };
 
